@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>cycle</title>
+    <link rel="stylesheet" href="style.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Google Font Link for Icons -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200">
+</head>
+<body>
+    <header>
+        <h1>Motivational Spectrum</h1>
+    </header>
+    <div class="container">
+        <ul></ul>
+        <div class="controls">
+            <button onclick="adjustDay(1)">👇</button>
+        </div>
+    </div>
+    <script>
+        const febHolidays = [
+            "Believe in yourself",
+            "Success is persistence",
+            "Keep moving forward",
+            "Dream big, act now",
+            "Love what you do",
+            "Push your limits",
+            "Greatness takes time",
+            "Focus on progress",
+            "Create your path",
+            "Stay positive always",
+            "Work hard, shine bright",
+            "Embrace the journey",
+            "You’ve got this",
+            "Trust the process",
+            "Never give up",
+            "Challenges make growth",
+            "Change is progress",
+            "Strength in struggle",
+            "Success is earned",
+            "Dreams become reality",
+            "Believe in possibilities",
+            "Stay humble, hustle hard",
+            "You are unstoppable",
+            "Progress, not perfection",
+            "Keep pushing limits",
+            "Strive for excellence",
+            "Think, believe, achieve",
+            "Courage over comfort",
+            "Attitude is everything",
+            "Action creates success",
+            "Embrace the challenge",
+            "Rise and grind",
+            "Do it now",
+            "Stay focused, win big"
+        ];
+
+        const ulEl = document.querySelector("ul");
+        const d = new Date();
+        let daynumber = d.getMonth() == 1 ? d.getDate() - 1 : 0;
+        let activeIndex = daynumber;
+        const rotate = -360 / febHolidays.length;
+        init();
+
+        function init() {
+            febHolidays.forEach((holiday, idx) => {
+                const liEl = document.createElement("li");
+                liEl.style.setProperty("--day_idx", idx);
+                liEl.innerHTML = `<time datetime="2022-02-${idx + 1}">${idx + 1}</time><span>${holiday}</span>`;
+                ulEl.append(liEl);
+            });
+            ulEl.style.setProperty("--rotateDegrees", rotate);
+            adjustDay(0);
+        }
+
+        function adjustDay(nr) {
+            daynumber += nr;
+            ulEl.style.setProperty("--currentDay", daynumber);
+            const activeEl = document.querySelector("li.active");
+            if (activeEl) activeEl.classList.remove("active");
+            activeIndex = (activeIndex + nr + febHolidays.length) % febHolidays.length;
+            const newActiveEl = document.querySelector(`li:nth-child(${activeIndex + 1})`);
+            document.body.style.backgroundColor = window.getComputedStyle(newActiveEl).backgroundColor;
+            newActiveEl.classList.add("active");
+        }
+
+        window.addEventListener("keydown", (e) => {
+            switch (e.key) {
+                case "ArrowUp":
+                    adjustDay(-1);
+                    break;
+                case "ArrowDown":
+                    adjustDay(1);
+                    break;
+                default:
+                    return;
+            }
+        });
+    </script>
+</body>
+</html>
